@@ -77,7 +77,7 @@ renderRandomProduct();
 var counter = 0;
 
 function clickStopCounter(){
-  if(clickStopCounter <= 25){
+  if(counter <= 25){
     renderRandomProduct();
     counter++;
     
