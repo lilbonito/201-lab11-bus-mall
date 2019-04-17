@@ -9,7 +9,9 @@ var allProducts = [];
 var lastShown = ['initial', 'place', 'holders'];
 var productDescriptions = [];
 var totalClicks = 0;
-var MAX_CLICK = 20;
+var MAX_CLICK = 25;
+var totalVotes = [];
+
 
 function getRandomProductNumber(){
   var randomNumber = Math.floor(Math.random() * allProducts.length);
@@ -46,16 +48,12 @@ function renderRandomProduct(){
   img3.alt = allProducts[lastShown[5]].description;
 }
 function Product(picturePath, description){
-  this.vote;
+  this.vote = 0;
   this.picturePath = picturePath;
   this.description = description;
   allProducts.push(this);
   productDescriptions.push(description);
-  this.confirmClick = function(){
-    this.timesClicked = 0;
-    this.timesClicked++;
-  };
-}
+
 
 new Product('img/bag.jpg', 'a Bag');
 new Product('img/banana.jpg', 'a Banana');
@@ -83,20 +81,19 @@ new Product('img/wine-glass.jpg', 'Salut!');
 renderRandomProduct();
 
 function handleClick(event){
-  if(event){
-    for(var i = 0; i < allProducts.length; i++){
-      if(event.target.alt === allProducts[i].description){
-        allProducts[i].confirmClick(); 
-      }
-    }
-  }
-  totalClicks++;
   if(event.target.alt === 'image-comtainer'){
     alert('Click on the Image, Brah');
   }
-  for(var j = 0; j < allProducts; j++){
-    if(event.target.alt === allProducts[j].description){
-      allProducts[j].vote++;
+  totalClicks++;
+  // for(var i = 0; i < allProducts.length; i++){
+  //   if(event.target.alt === allProducts[i].description){
+  //     allProducts[i].confirmClick();
+  //   }
+  // }
+
+  for(var i = 0; i < allProducts.length; i++){
+    if(event.target.alt === allProducts[i].description){
+      allProducts[i].vote++;
     }
   }
   if(totalClicks === MAX_CLICK){
@@ -105,15 +102,15 @@ function handleClick(event){
     drawChart();
   }
   renderRandomProduct();
+var allProductsStorage = [];
+var descriptionStorage = [];
+for{ i = 0; i < allProductsStorage}
 
 }
-productPictureReference.addEventListener('click', handleClick);
-
 function drawChart(){
   var canvasReference = document.getElementById('myChart');
-  var totalVotes = [];
   for(var i = 0; i < allProducts.length; i++){
-    totalVotes.push(allProducts[i].timesClicked);
+    totalVotes.push(allProducts[i].vote);
   }
 
 
@@ -125,12 +122,13 @@ function drawChart(){
         label: 'Product Ratings',
         data: totalVotes,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
           'rgba(75, 192, 192, 0.2)',
           'rgba(153, 102, 255, 0.2)',
           'rgba(255, 159, 64, 0.2)'
+          
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -147,6 +145,9 @@ function drawChart(){
       scales: {
         yAxes: [{
           ticks: {
+            max: 10,
+            min: 0,
+            stepSize:1.0,
             beginAtZero: true
           }
         }]
@@ -155,3 +156,4 @@ function drawChart(){
   });
 }
 
+productPictureReference.addEventListener('click', handleClick);

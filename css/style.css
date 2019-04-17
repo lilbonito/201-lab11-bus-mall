@@ -1,12 +1,16 @@
 
 
-div img{
-    width: 200px;
-    height: 200px;
+#image-container{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between ;
     border: 5px solid black;
+    width: 200px;
+    height:200px;
+    
 }
-canvas{
-    width: 400px;
-    height: auto;
+#myChart{
+    max-width: 600px;;
+    max-height:auto;
 
 }
