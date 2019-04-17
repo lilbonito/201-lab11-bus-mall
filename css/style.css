@@ -3,4 +3,10 @@
 div img{
     width: 200px;
     height: 200px;
+    border: 5px solid black;
+}
+canvas{
+    width: 400px;
+    height: auto;
+
 }

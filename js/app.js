@@ -1,10 +1,15 @@
 'use strict';
 
+var productPictureReference = document.getElementById('image-container');
+
 var img1 = document.getElementById('rand-img1');
 var img2 = document.getElementById('rand-img2');
 var img3 = document.getElementById('rand-img3');
 var allProducts = [];
 var lastShown = ['initial', 'place', 'holders'];
+var productDescriptions = [];
+var totalClicks = 0;
+var MAX_CLICK = 20;
 
 function getRandomProductNumber(){
   var randomNumber = Math.floor(Math.random() * allProducts.length);
@@ -34,27 +39,29 @@ function renderRandomProduct(){
   lastShown.push(thirdImage);
 
   img1.src = allProducts[lastShown[3]].picturePath;
-//   img1.alt = lastShown[3].description;
+  img1.alt = allProducts[lastShown[3]].description;
   img2.src = allProducts[lastShown[4]].picturePath;
-//   img2.alt = lastShown[4].description;
+  img2.alt = allProducts[lastShown[4]].description;
   img3.src = allProducts[lastShown[5]].picturePath;
-//   img3.alt = lastShown[5].description;
+  img3.alt = allProducts[lastShown[5]].description;
 }
-
 function Product(picturePath, description){
-
+  this.vote;
   this.picturePath = picturePath;
   this.description = description;
   allProducts.push(this);
+  productDescriptions.push(description);
+  this.confirmClick = function(){
+    this.timesClicked = 0;
+    this.timesClicked++;
+  };
 }
-
-
 
 new Product('img/bag.jpg', 'a Bag');
 new Product('img/banana.jpg', 'a Banana');
 new Product('img/bathroom.jpg', 'a bathroom');
 new Product('img/boots.jpg', 'some Boots');
-new Product('img/breakfast.jpg', 'ummy Breakfast');
+new Product('img/breakfast.jpg', 'Yummy Breakfast');
 new Product('img/bubblegum.jpg', 'a bubblegum');
 new Product('img/chair.jpg', 'a chair');
 new Product('img/cthulhu.jpg', 'Heed the Call');
@@ -63,7 +70,7 @@ new Product('img/dragon.jpg', 'a DRAGON!');
 new Product('img/pen.jpg', 'una Pluma, guay.');
 new Product('img/pet-sweep.jpg', 'its not a vaccum');
 new Product('img/scissors.jpg', 'Dont run with these!');
-new Product('img/shark.jpg', 'Insert Jews Theme Here');
+new Product('img/shark.jpg', 'Insert Jaws Theme Here');
 new Product('img/sweep.png', 'SWIFFER');
 new Product('img/tauntaun.jpg', 'And I thought they smelled bad..');
 new Product('img/unicorn.jpg', 'Sparkly');
@@ -74,15 +81,77 @@ new Product('img/wine-glass.jpg', 'Salut!');
 
 
 renderRandomProduct();
-var counter = 0;
 
-function clickStopCounter(){
-  if(counter <= 25){
-    renderRandomProduct();
-    counter++;
-    
+function handleClick(event){
+  if(event){
+    for(var i = 0; i < allProducts.length; i++){
+      if(event.target.alt === allProducts[i].description){
+        allProducts[i].confirmClick(); 
+      }
+    }
+  }
+  totalClicks++;
+  if(event.target.alt === 'image-comtainer'){
+    alert('Click on the Image, Brah');
+  }
+  for(var j = 0; j < allProducts; j++){
+    if(event.target.alt === allProducts[j].description){
+      allProducts[j].vote++;
+    }
+  }
+  if(totalClicks === MAX_CLICK){
+
+    productPictureReference.removeEventListener('click', handleClick);
+    drawChart();
+  }
+  renderRandomProduct();
+
 }
+productPictureReference.addEventListener('click', handleClick);
+
+function drawChart(){
+  var canvasReference = document.getElementById('myChart');
+  var totalVotes = [];
+  for(var i = 0; i < allProducts.length; i++){
+    totalVotes.push(allProducts[i].timesClicked);
+  }
+
+
+  new Chart(canvasReference, {
+    type: 'bar',
+    data: {
+      labels: productDescriptions,
+      datasets: [{
+        label: 'Product Ratings',
+        data: totalVotes,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
-var productPictureReference = document.getElementById('image-container');
-productPictureReference.addEventListener('click', clickStopCounter);
