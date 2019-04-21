@@ -61,7 +61,7 @@ function renderList(){
   }
 }
 
-Product.parsedProducts = JSON.parse(localStorage.getItem('allProductStorage'));
+// Product.parsedProducts = JSON.parse(localStorage.getItem('allProductStorage'));
 
 function Product(picturePath, description){
   this.vote = 0;
@@ -81,7 +81,7 @@ Product.allProducts = Product.parsedProducts ||[
   new Product('img/bubblegum.jpg', 'a bubblegum'),
   new Product('img/chair.jpg', 'a chair'),
   new Product('img/cthulhu.jpg', 'Heed the Call'),
-  new Product('img/dog-duck.jpg', 'quacky'),
+  new Product('img/dog-duck.jpg', 'qua= Product.parsedProducts ||cky'),
   new Product('img/dragon.jpg', 'a DRAGON!'),
   new Product('img/pen.jpg', 'una Pluma, guay.'),
   new Product('img/pet-sweep.jpg', 'its not a vaccum'),
@@ -150,7 +150,7 @@ function drawChart(){
 
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
+          'rgba(255, 9, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
